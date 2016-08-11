@@ -26,3 +26,17 @@ table(edad)
 #vuelve a pedir de que base toma los datos
 detach(base1.1)
 summary(base1.1$edad)
+
+
+
+
+###      IMPORTAR BASE DE DATOS    ###
+
+## para importar una base de datos se utiliza el paquete foreign
+install.packages ("foreign")
+require (foreign)
+sociodem <- read.dbf ("C://Users//SALA-C20//Documents//regresion//SDEMT215.dbf")
+
+
+table(sociodem$SEX)
+

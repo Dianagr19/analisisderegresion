@@ -1,0 +1,61 @@
+
+####     compu 28     ####
+
+setwd ("C://Users//SALA-C28.RTIC-C28-HP//Documents//REGRESION")
+
+require (foreign)
+SDEMT215<- data.frame(read.dbf("SDEMT215.dbf"))
+
+
+## 4.1 Recodificación de varibles numéricas (rangos)
+#método 1
+SDEMT215$EDAD11[as.numeric(SDEMT215$EDA)>= 0 & as.numeric (SDEMT215$EDA)<=10] <-1 #as.numeric es para cambiar de caracter a numerico
+SDEMT215$EDAD11[as.numeric(SDEMT215$EDA)>= 11 & as.numeric (SDEMT215$EDA)<=20] <-2
+SDEMT215$EDAD11[as.numeric(SDEMT215$EDA)>= 21 & as.numeric (SDEMT215$EDA)<=30] <-3
+SDEMT215$EDAD11[as.numeric(SDEMT215$EDA)>= 31 & as.numeric (SDEMT215$EDA)<=40] <-4
+SDEMT215$EDAD11[as.numeric(SDEMT215$EDA)>= 41] <-5
+ls (SDEMT215)  #lista de variables
+table (SDEMT215$EDAD11)
+class (SDEMT215$ENT)
+SDEMT215$ENT <- (as.character (as.numeric (SDEMT215$ENT)))
+
+
+
+### MÉTODO 2 HACE LO MISMO QUE EL ANTERIOR 
+SDEMT215$EDAD111 <- ifelse (as.numeric (SDEMT215$EDA) >=0 & as.numeric(SDEMT215$EDA)<=10,1, #DEL 0 AL 10 PONLE 1
+                           ifelse (as.numeric (SDEMT215$EDA) >=11 & as.numeric(SDEMT215$EDA)<=20,2, #DEL 11 AL 20 PONLE 2
+                                   ifelse (as.numeric (SDEMT215$EDA) >=21 & as.numeric(SDEMT215$EDA)<=30,3, #DEL 21 AL 30 PONLE 3
+                                           ifelse (as.numeric (SDEMT215$EDA) >=31 & as.numeric(SDEMT215$EDA)<=40,4,5))))#DEL 31 AL 40 PONLE 4 Y A TODO LO DEMAS PONLE 5
+table(SDEMT215$EDAD111)
+
+
+
+## 4.1 Recodificación de varibles TIPO CARACTER
+class (SDEMT215$R_DEF)
+SDEMT215$VALIDO [as.character (SDEMT215$R_DEF)!="00"] <- "Entrevista incompleta" #EN TU ARCHIVO ADEMT215 CREA UNA VARIABLE LLAMADA "VALIDO" QUE CONTIENE DE TIPO CARACTER LA VARIABLE "R_DEF" Y A TODOS LOS "DISTINTOS DE 0" PONLE "ENTREVISTA COMPLETA"
+SDEMT215$VALIDO [as.character (SDEMT215$R_DEF)=="00"] <- "Entrevista completa"
+table(SDEMT215$VALIDO)
+
+
+
+
+
+####################################################################
+
+# 5 SUBCONJUNTO DE DATOS
+
+# 5.1 Seleccionando variables de interes
+            #Método 1
+var<- c("R_DEF", "LOC", "MUN", "C_RES") # la "c" es para crear vector, entre comisllas van las variables que nos interesan
+newdata1<- SDEMT215 [,var] #crea otra base de datos llamada "newdata1" que es basada en "SDEMT215" y le pegas las columnas anteriores [,var]-> [*primera entrada renglon y "," la segunda columna]
+
+
+#Seleccionar casos u observaciones
+ # *funcion.... subset(), significa subconjunto
+mujer <- subset (SDEMT215, SDEMT215$SEX==2)
+table(mujer$SEX)
+
+mujer1 <- subset (mujer,mujer$CD_A=="02" | mujer$CD_A==16)
+class (mujer$CD_A)
+mujer1$CD_A <- as.character(mujer1$CD_A)
+table(mujer1$CD_A)

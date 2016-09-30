@@ -1,0 +1,58 @@
+capa<- c(4330,5500,5500,4700,5200,5500,4700,5500,5800,5000) #independiente (x2)
+calidad<- c(2,3,4,3,4,4,4,5,5,5)#independiente (x1)
+precio <- c(190,219,249,249,250,340,289,395,439,525)# dependiente (y)
+mochil <- data.frame (precio,capa,calidad) #
+
+mochil1<- mochil[c(-1,-7,-10),]# la "," fuera del parentecis es para indicar filas y columnas y como adelante 
+#no se pone nada es que resptará las filas
+mochil2 <- mochil[,-2]#no se pone "c" porq es un solo elemento
+        ## primero aplicamos una correlacipón
+cor( mochil,use="everything", method = "pearson")
+#observamos que las variables tienen correlaciones diversas
+
+  ## aplicamos modelo
+modmo<-lm (precio~calidad+capa)
+summary (modmo)
+#se revisa la R2 ajustada por ser un mRM tenemos una r2 ajustada de .70 
+#lo que implica que la recta de regresión explica 70% la variabilidad del modelo 
+#revisando el valor F y p value tenemos que si cumple con los criterios de un buen ajuste (F>1 y pvalue <.05)
+#con estos datos podemos mencionar que estamos ante un buen modelo por lo que se pasa al diagnostico
+
+#el diagnostico se realiza para poder generalizar los resultados del modelo a partir de la revisión de los supuestos
+
+
+# lo primero que se hace en un mrm es observar graficamente los supuestos:
+#en primer lugar se contrastan los valores residuales contra los valores ajustados,
+#se realiza con la función plot y el argumento which=1 
+#recuerden que el pch cambia la figura de las observaciones
+plot(modmo, which= 1, pch =3)
+#aqui esperamos que los residuos se distribuyan sin patron
+#una tendencia en la variabilidad de los residuos sugiere que la varianza esta relacionada
+#cn la media, violando el supuesto de varianza constante.
+
+## SUPUESTO DE NORMALIDAD
+plot(modmo,which= 2, pch=3)
+#en este caso esperamos que los residuos tipificados alrededor de la linea se observa
+#que si hay distribucion normal
+
+##TERCER SUPUESTO
+#Los residuos estan estandarizados por sus desviaciones estandar estimadas
+plot(modmo,which= 3,pch=3)
+#aqui podemos ver si los residuos se distribuyen constantes en los valores ajustados
+#una grafica sin patron observable
+
+##CUARTO SUPUESTO
+plot(modmo,which= 5, pch=3)
+#expone la importancia de cada observacion en el modelo
+#en esta distancia el graficonos muestra las observaciones que podran impactar en el modelo, 
+#por lo que se sugiere eliminarlas.
+
+
+
+
+###COMPROBAMOS LOS CAMBIOS CON LOS MISMO PASOS
+cor( mochil1,use="everything", method = "pearson")
+modmo<-lm (precio~calidad+capa, mochil1)
+modmo<-lm (mochil1$precio~mochil1$calidad+mochil1$capa)
+
+summary (modmo)

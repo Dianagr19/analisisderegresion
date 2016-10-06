@@ -1,0 +1,74 @@
+capa<- c(4330,5500,5500,4700,5200,5500,4700,5500,5800,5000) #independiente (x2)
+calidad<- c(2,3,4,3,4,4,4,5,5,5)#independiente (x1)
+precio <- c(190,219,249,249,250,340,289,395,439,525)# dependiente (y)
+mochil <- data.frame (precio,capa,calidad) #
+
+plot (capa, precio, pch =12, xlab = "capa", ylab ="precio", main ="grafica de disperción", col= "blue")
+cor (precio, capa, method ="pearson")
+cor.test (precio, capa, method = "pearson")
+#con estos indicadores rechazamos el modelo simple
+# ahora revisamos con la otra variable que tenemos
+plot (capa, precio, pch =11, xlab = "capa", ylab ="precio", main ="grafica de disperción", col= "blue")
+cor (preio, calidad, method ="pearson")
+cor.test (precio, calidad, method = "pearson")
+#Com paración de modelos
+#pretendemos seleccionar el mejor subconjunto de var independientes, en este caso para la aplicacion de mrm 
+#tenemos dos variables independientes (capasidad y calidad) por lo que se propone comparar tres 
+# modelos con la finalidad de aplicar el principio de parsimonia, conocer variables independientes 
+#innecesarias , evitar multilianeidad, es decir, que se tienen muchas variables intentando 
+#explicar el modelo 
+## ante estas variables se pueden comparar tres modelos
+# 1) precio - capacidad
+# 2) precio - calidad
+# 3) precio - calidad + capacidad
+
+####¿CÓMO SELECCIONAMOS EL MEJOR MODELO?
+
+# Criterio de información Akaike (AIC)
+# el proble de utilizar R cuadrada 
+
+
+#asi estamos decidiendo cual de todos los modelos ajusta mejor 
+
+
+
+
+#AIC = (n)(log(SCR/n))+2k
+#SCR = suama de cuadrados residuales
+#n = num. de casos en el modelo
+#k =num. de variables independientes
+# el problema es que el unico criterio para el AIC es mayor el modelo es peor si AIC es menor el modelo es mejor
+#es decir, esperamos un Aic MÁS PEQUEÑAS....
+#
+# El AIC nos va a ayudar a decidir el modelo
+# el matodo más recomendable es el metodo step bystep
+#para R  se utiliza la función step ()
+# dentron del metodo step by step hay 3 modalidades
+# 1) forward... parte del coeficiente Bo y de ahi va probando las variables independientes para 
+#ver cual es la que más aporta al modelo
+# 2) backward... R empieza con todas las variables indep y estudia SEI el AIC baja cuando hay cambios de variables
+#3) both .... empieza como el forward la diferencia es que se realizan test para conocer la var indep menos util
+
+# el metodo más recomendado es backward xq tienen un efecto represor que permite probar 
+# cuando una variable tiene influencia solo si otra variable se mantiene constante
+ 
+### vamos a calcular el modelo con 2 var indep
+moch <- data.frame (precio, capa, calidad)
+cor(moch, use ="everything", method = "pearson")
+mod1 <- lm(precio ~ capa + calidad, data = moch)
+summary(mod1)
+
+step (mod1, direction = "backward")
+
+#aqui podemos ver que el metodo step analizo dos modelos
+# 1) precio ~ capa + calidad con un AIC = 83.90
+# 2) precio ~ calidad con un AIC = 83.51
+
+
+## AHORA VAMOS A PROBAR CON EL MÉTODO DE BOTH
+step (mod1, direction = "both")
+#tenemos un resultado igul al de backward por la forma en que se contruye este modelo 
+#ahora con el modelo forward 
+step (mod1, direction = "backward")
+# este solo muestra el modelo completo xq inihia haciendo nuevas pruebas con el modelo nulo
+# y solo deja el modelo  completo xq es el que amyor AIC muestra...

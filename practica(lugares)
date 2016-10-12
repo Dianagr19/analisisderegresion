@@ -1,6 +1,4 @@
-####********PRACTICA 4**********
-#_________________________________________________________________________________________________________
-####################PRACTICA AGUASCALIENTES 01, VERACRUZ 30
+####PRACTICA: AGUASCALIENTES 01, VERACRUZ 30
 #####INSTALAR MI BASE DE DATOS
 install.packages("foreign")
 require(foreign)

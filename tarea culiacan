@@ -13,3 +13,10 @@
 
 
 
+
+
+require (foreign)
+ENOE <- read.dbf ("C:/Users/Sala-C26/Desktop/sdemt216.dbf")
+View(ENOE)
+INGOCUP <- subset(ENOE, ENOE$MUN==20 )
+View (INGOCUP)

@@ -1,0 +1,15 @@
+ENOE$CD_A<-as.numeric(as.character(ENOE$CD_A))
+toluca<-subset(ENOE,ENOE$CD_A==16)
+
+
+###GRADO DE ESTUDIOS 
+toluca$CS_P13_1<-as.character(toluca$CS_P13_1)
+CLAVE<- subset (toluca,toluca$CS_P13_1>=6 & toluca$CS_P13_1<=09 )
+G1<- c(CLAVE$CS_P13_1)
+H1<- data.frame(G1)
+
+### POBLACIÓN OCUPADA
+CLAVE$CLASE2<-as.numeric(as.character(CLAVE$CLASE2))
+ocupada<-subset(CLAVE,CLAVE$CLASE2==1)
+G2<-c(ocupada$CLASE2)
+H2<-data.frame(G2)

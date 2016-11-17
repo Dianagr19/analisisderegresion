@@ -1,0 +1,30 @@
+install.packages("questionr")
+require(questionr)
+install.packages("foreign")
+require(foreign)
+setwd("C://Users//Sala-C27//Desktop")
+doc<-data.frame(read.spss("solorural.sav"))
+
+##5 a 17
+wtd.table(doc$t_loc==4,weights=doc$fac_mti) 
+wtd.table(doc$sex,weights=doc$fac_mti)
+wtd.table(doc$eda, weights=doc$fac_mti)
+
+
+
+wtd.table(doc$clase2==1, weights = doc$fac_mti)
+wtd.table (doc$clase2==1&doc$sex=="hombres", weights = doc$fac_mti) 
+wtd.table (doc$clase2==1&doc$sex=="mujeres", weights = doc$fac_mti)
+
+###
+
+a<- subset(doc), doc$eda19c==3 & doc$sex=="hombres")
+b<- subset(RURAL, RURAL$eda19c==4 | RURAL$eda==5 & doc$sex=="hombres")
+
+c<- subset(doc, doc$eda19c==3 & doc$sex=="mujeres")
+d<- subset(doc, doc$eda19c==4 | doc$eda==5 & doc$sex=="mujeres")
+
+###
+e <- subset(doc, doc$asis==1 & doc$sex=="hombres")
+f<- subset(doc, doc$asis==1 & doc$sex=="mujeres")
+

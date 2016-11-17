@@ -19,7 +19,7 @@ wtd.table (doc$clase2==1&doc$sex=="mujeres", weights = doc$fac_mti)
 ###
 
 a<- subset(doc), doc$eda19c==3 & doc$sex=="hombres")
-b<- subset(RURAL, RURAL$eda19c==4 | RURAL$eda==5 & doc$sex=="hombres")
+b<- subset(doc, doc$eda19c==4 | doc$eda==5 & doc$sex=="hombres")
 
 c<- subset(doc, doc$eda19c==3 & doc$sex=="mujeres")
 d<- subset(doc, doc$eda19c==4 | doc$eda==5 & doc$sex=="mujeres")

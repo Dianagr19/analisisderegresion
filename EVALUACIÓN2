@@ -1,0 +1,55 @@
+install.packages("questionr")
+require(questionr)
+install.packages("foreign")
+require(foreign)
+setwd("C://Users//Sala-C27//Downloads")
+doc<-data.frame(read.spss("solorural.sav"))
+nocu<- subset (doc, doc$c_ocu=='ocupado')
+
+
+
+########recodificar
+#t_per~ sex + eda1 + asis + sex_jefe + t_apo1 + ocu_jefe     ** t_per es la var dependiente (familiar, no familiar, cuenta propia, no especificado)
+table(nocu$t_per)  ## recodificarla dejar solo 3 categorias
+table (doc$sex)
+table (doc$eda1, doc$eda)
+table (doc$asis)
+table (doc$sex_jefe)
+table (doc$escol_jefe)
+table (doc$t_apo1)
+table (doc$ocu_jefe)
+
+### otra forma de recodificar
+install.packages("plyr")
+library (plyr)
+doc$t_per <- revalue (factor (doc$t_per), c("4"=NA))
+table(doc$t_per)
+
+
+doc$t_apo1 <- revalue (factor (doc$t_apo1), c("Otro tipo de ayuda"=NA))
+table(doc$t_apo1)
+
+doc$escol_jefe <- revalue (factor (doc$escol_jefe), c("No especificado"=NA))
+table(doc$escol_jefe)
+
+nocu$t_per <- factor (nocu$t_per, levels = c(1, 2,3), labels = c("familiar", "no familiar", "cuenta propia" ) )
+table(nocu$t_per)
+
+###otra forma de renombrar
+nocu$eda1 <- revalue (factor(nocu$eda1), c ("1"=" 5 a 9" , "2" = "10 a 13", "3"= "14 a 17"))
+table(nocu$eda1)
+
+
+#### MODELO DE REGRESION LOGISTICA
+require (nnet)
+mod1 <- multinom(t_per~1, data = nocu)
+summary (mod1)
+modfin <- multinom(t_per ~ sex + eda1 + asis + sex_jefe + t_apo1 + ocu_jefe, data = nocu)
+
+
+#### TABLA EN LATEX
+install.packages("stargazer")
+require(stargazer)
+help ("stargazer")
+s<- stargazer(modfin, type ='html', title = "coefficient" , summary = T )
+stargazer(modfin, type ="text" , title = "mlogit" , digits =2 , out = "C://Users//Sala-C27//Downloads//diana.txt")
